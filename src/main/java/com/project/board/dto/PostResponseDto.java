@@ -19,13 +19,7 @@ public class PostResponseDto {
         this.date = post.getDate();
     }
 
-    public PostResponseDto(Long id, String title, String writer, String content, String date){
-        this.id = id;
-        this.title = title;
-        this.writer = writer;
-        this.content = content;
-        this.date = date;
-    }
+
 
 
 }

@@ -9,4 +9,8 @@ public class PostRequestDto {
     private String password;
     private String content;
     private String date;
+
+
 }
+
+

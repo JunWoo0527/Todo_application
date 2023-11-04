@@ -24,9 +24,11 @@ public class Post {
         this.date = requestDto.getDate();
     }
 
-    public void update(PostRequestDto requestDto) {
-        this.title = requestDto.getTitle();
-        this.writer = requestDto.getWriter();
-        this.content = requestDto.getContent();
+    public void update(Post post) {
+        this.id = post.getId();
+        this.title = post.getTitle();
+        this.writer = post.getWriter();
+        this.content = post.getContent();
+        this.date = post.getDate();
     }
 }
