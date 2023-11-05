@@ -24,9 +24,9 @@ public class PostController {
     }
 
     // 선택 게시글 출력
-    @GetMapping("/post/{id}")
-    public PostResponseDto printPostControl(@PathVariable("id") Long id) {
-        return postService.printPost(id);
+    @GetMapping("/post/{postId}")
+    public PostResponseDto printPostControl(@PathVariable("postId") Long postId) {
+        return postService.printPost(postId);
     }
 
     // 게시글 생성
@@ -36,15 +36,15 @@ public class PostController {
     }
 
     // 게시글 수정
-    @PutMapping("/post/{id}")
-    public PostResponseDto updatePostControl(@PathVariable("id") Long id, @RequestBody(required = false) PostRequestDto postRequestDto) {
-        return postService.updatePost(id, postRequestDto);
+    @PutMapping("/post/{postId}")
+    public PostResponseDto updatePostControl(@PathVariable("id") Long postId, @RequestBody(required = false) PostRequestDto postRequestDto) {
+        return postService.updatePost(postId, postRequestDto);
     }
 
     // 게시글 삭제
-    @DeleteMapping("/post/{id}") //Delete 메서드는 Body를 가지지못함으로 Request Parm방식으로 데이터를받음
-    public String deletePostControl(@PathVariable("id") Long id, @RequestParam String password) {
-        return  postService.deletePost(id, password);
+    @DeleteMapping("/post") //Request Parm방식으로 데이터를받음
+    public String deletePostControl(@RequestParam Long postId, String password) {
+        return postService.deletePost(postId, password);
     }
 
 

@@ -93,7 +93,6 @@ public class PostService {
                 // 해당 게시글 삭제
                 postRepository.getPostList().remove(id);
 
-
                 return "삭제되었습니다.";
             } else {
                 throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
