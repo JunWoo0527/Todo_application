@@ -2,18 +2,21 @@
 
 - [x]  **Use Case Diagram 그려보기!**
     - 스파르타 익명 게시판 Use Case Diagram
-        
-        ![스파르타_익명_게시판_UseCaseDiagram.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/e529bad9-7393-48b7-8f0c-6e49f401e718/85b4e694-27e5-498d-b085-c3948300b31c/%EC%8A%A4%ED%8C%8C%EB%A5%B4%ED%83%80_%EC%9D%B5%EB%AA%85_%EA%B2%8C%EC%8B%9C%ED%8C%90_UseCaseDiagram.png)
+  
+    ![스파르타_익명_게시판_UseCaseDiagram](https://github.com/JunWoo0527/spartaBoard/assets/146637795/0700e2bc-85f7-422c-94de-9f28d54604e3)
+
         
 - [x]  **API 명세서 작성하기!**
     - API 명세서
         
-        [게시글 API 설계](https://www.notion.so/b498340c09074d4fbab91cf7297a262b?pvs=21)
+      ![캡처1](https://github.com/JunWoo0527/spartaBoard/assets/146637795/fb62398d-2ce7-41e0-90a3-ad6c1149268f)
+
         
 - [x]  **ERD 작성하기!**
     - ERD
-        
-        [스파르타익명게시글](https://www.erdcloud.com/d/NYcYh9NuohbYNEYtu)
+      
+     ![캡처](https://github.com/JunWoo0527/spartaBoard/assets/146637795/8e660f0b-7f0e-48fe-9253-6a1ad7fe8157)
+    
         
 - [x]  **API 테스트 하기!**
 
