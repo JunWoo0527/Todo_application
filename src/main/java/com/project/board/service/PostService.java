@@ -4,15 +4,11 @@ import com.project.board.dto.PostRequestDto;
 import com.project.board.dto.PostResponseDto;
 import com.project.board.entity.Post;
 import com.project.board.repository.PostRepository;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 
 
-
-import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 
 @Service
@@ -39,6 +35,7 @@ public class PostService {
         PostResponseDto postResponseDto = new PostResponseDto(post);
         return postResponseDto;
     }
+
     // 게시글 출력
     public PostResponseDto printPost(Long id) {
         PostResponseDto postResponseDto = new PostResponseDto(postRepository.getPostList().get(id));
@@ -47,11 +44,15 @@ public class PostService {
 
     // 게시글 전체 출력
     public List<PostResponseDto> printAllPost() {
+
         // Map to List
         List<PostResponseDto> resopnseList = postRepository.getPostList().values().stream()
                 .map(PostResponseDto::new).toList();
 
-        return resopnseList;
+        // 내림차순 정렬
+        List<PostResponseDto> resopnseListDesc = resopnseList.stream()
+                .sorted(Comparator.comparing(PostResponseDto::getDate).reversed()).toList();
+        return resopnseListDesc;
     }
 
     // 게시글 수정
@@ -67,7 +68,11 @@ public class PostService {
 
                 // 해당 게시글 수정
                 post.setId(id);
-                post.setDate(String.valueOf(LocalDateTime.now()));
+
+                Date date = new Date(Calendar.getInstance().getTimeInMillis());
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
+                post.setDate(simpleDateFormat.format(date));
+
                 postRepository.findById(id).update(post);
 
                 // Entity -> ResponseDto
@@ -85,8 +90,10 @@ public class PostService {
 
     // 게시글 삭제
     public String deletePost(Long id, String password) {
+
         // 해당 게시글이 DB에 존재하는지 확인
         if (postRepository.getPostList().containsKey(id)) {
+
             // Password가 일치하는지 확인
             if (Objects.equals(postRepository.findById(id).getPassword(), password)) {
 

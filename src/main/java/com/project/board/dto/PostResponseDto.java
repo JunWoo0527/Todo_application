@@ -3,6 +3,8 @@ package com.project.board.dto;
 import com.project.board.entity.Post;
 import lombok.Getter;
 
+import java.util.Date;
+
 @Getter
 public class PostResponseDto {
     private Long id;
