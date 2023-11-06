@@ -38,8 +38,13 @@ public class PostService {
 
     // 게시글 출력
     public PostResponseDto printPost(Long id) {
-        PostResponseDto postResponseDto = new PostResponseDto(postRepository.getPostList().get(id));
-        return  postResponseDto;
+        // 일치하는 ID 조회
+        if (postRepository.getPostList().containsKey(id)) {
+            PostResponseDto postResponseDto = new PostResponseDto(postRepository.getPostList().get(id));
+            return postResponseDto;
+        } else {
+            throw new IllegalArgumentException("선택한 게시글은 존재하지 않습니다.");
+        }
     }
 
     // 게시글 전체 출력
@@ -56,7 +61,8 @@ public class PostService {
     }
 
     // 게시글 수정
-    public PostResponseDto updatePost(Long id, PostRequestDto postRequestDto) {
+    public PostResponseDto updatePost(Long id, PostRequestDto postRequestDto) throws IllegalArgumentException
+    {
         // 해당 게시글이 DB에 존재하는지 확인
         if (postRepository.getPostList().containsKey(id)) {
 
@@ -68,11 +74,9 @@ public class PostService {
 
                 // 해당 게시글 수정
                 post.setId(id);
-
                 Date date = new Date(Calendar.getInstance().getTimeInMillis());
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
                 post.setDate(simpleDateFormat.format(date));
-
                 postRepository.findById(id).update(post);
 
                 // Entity -> ResponseDto
@@ -82,14 +86,15 @@ public class PostService {
             } else {
                 throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
             }
-        } else {
+        } else { // 일치하는 ID가 없을때
             throw new IllegalArgumentException("선택한 게시글은 존재하지 않습니다.");
         }
     }
 
 
     // 게시글 삭제
-    public String deletePost(Long id, String password) {
+    public String deletePost(Long id, String password) throws IllegalArgumentException
+    {
 
         // 해당 게시글이 DB에 존재하는지 확인
         if (postRepository.getPostList().containsKey(id)) {
@@ -104,7 +109,7 @@ public class PostService {
             } else {
                 throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
             }
-        } else {
+        } else { // 일치하는 ID가 없을때
             throw new IllegalArgumentException("선택한 게시글은 존재하지 않습니다.");
         }
 
