@@ -3,6 +3,8 @@ package com.project.board.dto;
 import com.project.board.entity.Post;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
+
 
 @Getter
 public class PostResponseDto {
@@ -10,14 +12,16 @@ public class PostResponseDto {
     private String title;
     private String writer;
     private String content;
-    private String date;
+    private LocalDateTime createAt;
+    private LocalDateTime modifiedAt;
 
     public PostResponseDto(Post post) {
         this.id = post.getId();
         this.title = post.getTitle();
         this.writer = post.getWriter();
         this.content = post.getContent();
-        this.date = post.getDate();
+        this.createAt = post.getCreatedAt();
+        this.modifiedAt = post.getModifiedAt();
     }
 
 

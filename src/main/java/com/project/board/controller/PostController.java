@@ -37,14 +37,14 @@ public class PostController {
 
     // 게시글 수정
     @PutMapping("/post/{postId}")
-    public PostResponseDto updatePostControl(@PathVariable("postId") Long postId, @RequestBody PostRequestDto postRequestDto) {
+    public Long updatePostControl(@PathVariable Long postId, @RequestBody PostRequestDto postRequestDto) {
         return postService.updatePost(postId, postRequestDto);
     }
 
     // 게시글 삭제
-    @DeleteMapping("/post") //Request Parm방식으로 데이터를받음
-    public String deletePostControl(@RequestParam Long postId, String password) {
-        return postService.deletePost(postId, password);
+    @DeleteMapping("/post/{postId}") //Request Parm방식으로 데이터를받음
+    public Long deletePostControl(@PathVariable Long postId) {
+        return postService.deletePost(postId);
     }
 
 

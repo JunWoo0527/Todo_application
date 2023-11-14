@@ -5,9 +5,8 @@ import com.project.board.dto.PostResponseDto;
 import com.project.board.entity.Post;
 import com.project.board.repository.PostRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -26,103 +25,53 @@ public class PostService {
         // RequestDto -> Entity
         Post post = new Post(postRequestDto);
 
-        // Entity ID 부여 및 postList에 저장
-        Long maxId = postRepository.getPostList().size() > 0 ? Collections.max(postRepository.getPostList().keySet()) + 1 : 1;
-        post.setId(maxId);
-        postRepository.getPostList().put(post.getId(), post);
+        // DB에 저장
+        Post savePost = postRepository.save(post);
 
         // Entity -> ResponseDto
-        PostResponseDto postResponseDto = new PostResponseDto(post);
+        PostResponseDto postResponseDto = new PostResponseDto(savePost);
+
         return postResponseDto;
     }
 
-    // 게시글 출력
+    // 선택 게시글 출력
     public PostResponseDto printPost(Long id) {
-        // 일치하는 ID 조회
-        if (postRepository.getPostList().containsKey(id)) {
-            PostResponseDto postResponseDto = new PostResponseDto(postRepository.getPostList().get(id));
-            return postResponseDto;
-        } else {
-            throw new IllegalArgumentException("선택한 게시글은 존재하지 않습니다.");
-        }
+        PostResponseDto postResponseDto = new PostResponseDto(findPost(id));
+        return postResponseDto;
     }
 
     // 게시글 전체 출력
     public List<PostResponseDto> printAllPost() {
 
-        // Map to List
-        List<PostResponseDto> resopnseList = postRepository.getPostList().values().stream()
-                .map(PostResponseDto::new).toList();
-
-        // 내림차순 정렬
-        List<PostResponseDto> resopnseListDesc = resopnseList.stream()
-                .sorted(Comparator.comparing(PostResponseDto::getDate).reversed()).toList();
-        return resopnseListDesc;
+        return postRepository.findAllByOrderByModifiedAtDesc().stream().map(PostResponseDto::new).toList();
     }
 
     // 게시글 수정
-    public PostResponseDto updatePost(Long id, PostRequestDto postRequestDto) throws IllegalArgumentException
-    {
-        // 해당 게시글이 DB에 존재하는지 확인
-        if (postRepository.getPostList().containsKey(id)) {
+    @Transactional
+    public Long updatePost(Long id, PostRequestDto postRequestDto) {
+        // 해당 메모가 DB에 존재하는지 확인
+        Post post = findPost(id);
 
-            // RequestDto -> Entity
-            Post post = new Post(postRequestDto);
+        // Post 내용 수정
+        post.update(postRequestDto);
 
-            // Password가 일치하는지 확인
-            if (Objects.equals(postRepository.findById(id).getPassword(), post.getPassword())) {
-
-                // 해당 게시글 수정
-                post.setId(id);
-                Date date = new Date(Calendar.getInstance().getTimeInMillis());
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
-                post.setDate(simpleDateFormat.format(date));
-                postRepository.findById(id).update(post);
-
-                // Entity -> ResponseDto
-                PostResponseDto postResponseDto = new PostResponseDto(post);
-
-                return postResponseDto;
-            } else {
-                throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
-            }
-        } else { // 일치하는 ID가 없을때
-            throw new IllegalArgumentException("선택한 게시글은 존재하지 않습니다.");
-        }
+        return id;
     }
 
 
     // 게시글 삭제
-    public String deletePost(Long id, String password) throws IllegalArgumentException
-    {
+    public Long deletePost(Long id) {
+        // 해당 메모가 DB에 존재하는지 확인
+        Post post = findPost(id);
 
-        // 해당 게시글이 DB에 존재하는지 확인
-        if (postRepository.getPostList().containsKey(id)) {
+        // memo 삭제
+        postRepository.delete(post);
 
-            // Password가 일치하는지 확인
-            if (Objects.equals(postRepository.findById(id).getPassword(), password)) {
-
-                // 해당 게시글 삭제
-                postRepository.getPostList().remove(id);
-
-                return "삭제되었습니다.";
-            } else {
-                throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
-            }
-        } else { // 일치하는 ID가 없을때
-            throw new IllegalArgumentException("선택한 게시글은 존재하지 않습니다.");
-        }
-
-
-
-
+        return id;
     }
 
-
-
-
-
-
-
-
+    private Post findPost(Long id) {
+       return postRepository.findById(id).orElseThrow(() ->
+                new IllegalArgumentException("선택한 게시글은 존재하지 않습니다."));
+    }
 }
