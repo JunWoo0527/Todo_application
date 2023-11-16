@@ -10,15 +10,16 @@ import java.time.LocalDateTime;
 public class PostResponseDto {
     private Long id;
     private String title;
-    private String writer;
+    private String username;
     private String content;
     private LocalDateTime createAt;
     private LocalDateTime modifiedAt;
+    private boolean complete;
 
     public PostResponseDto(Post post) {
         this.id = post.getId();
         this.title = post.getTitle();
-        this.writer = post.getWriter();
+        this.username = post.getUser().getUsername();
         this.content = post.getContent();
         this.createAt = post.getCreatedAt();
         this.modifiedAt = post.getModifiedAt();

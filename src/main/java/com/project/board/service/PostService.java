@@ -3,7 +3,12 @@ package com.project.board.service;
 import com.project.board.dto.PostRequestDto;
 import com.project.board.dto.PostResponseDto;
 import com.project.board.entity.Post;
+import com.project.board.jwt.JwtAuthorizationFilter;
+import com.project.board.jwt.JwtUtil;
 import com.project.board.repository.PostRepository;
+import com.project.board.repository.UserRepository;
+import io.jsonwebtoken.Claims;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,16 +19,26 @@ import java.util.*;
 public class PostService {
 
     private final PostRepository postRepository;
+    private final UserRepository userRepository;
+    private final JwtUtil jwtUtil;
+    private final JwtAuthorizationFilter jwtAuthorizationFilter;
 
-    public PostService(PostRepository postRepository) {
+
+    public PostService(PostRepository postRepository, UserRepository userRepository, JwtUtil jwtUtil, JwtAuthorizationFilter jwtAuthorizationFilter) {
         this.postRepository = postRepository;
+        this.userRepository = userRepository;
+        this.jwtUtil = jwtUtil;
+        this.jwtAuthorizationFilter = jwtAuthorizationFilter;
     }
 
     // 게시글 저장
-    public PostResponseDto createPost(PostRequestDto postRequestDto) {
+    public PostResponseDto createPost(PostRequestDto postRequestDto ) {
+
 
         // RequestDto -> Entity
         Post post = new Post(postRequestDto);
+        post.getCreatedAt();
+
 
         // DB에 저장
         Post savePost = postRepository.save(post);
@@ -48,14 +63,15 @@ public class PostService {
 
     // 게시글 수정
     @Transactional
-    public Long updatePost(Long id, PostRequestDto postRequestDto) {
+    public PostResponseDto updatePost(Long id, PostRequestDto postRequestDto) {
         // 해당 메모가 DB에 존재하는지 확인
         Post post = findPost(id);
 
         // Post 내용 수정
         post.update(postRequestDto);
 
-        return id;
+        PostResponseDto postResponseDto = new PostResponseDto(post);
+        return postResponseDto;
     }
 
 

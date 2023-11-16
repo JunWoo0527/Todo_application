@@ -6,34 +6,43 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
-@Table(name = "todo")
+@Table(name = "post")
 @NoArgsConstructor
 public class Post extends Timestamped{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "title", nullable = false, length = 500)
+    @Column(name = "title", nullable = false, length = 20)
     private String title;
-    @Column(name = "writer", nullable = false)
-    private String writer;
-    @Column(name = "content", nullable = false, length = 500)
+    @Column(name = "content", nullable = false, length = 100)
     private String content;
+    @Column(name = "complete", nullable = false)
+    private boolean complete = false;
 
-    private String password;
+    // 관계설정
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    private List<Comment> commentList = new ArrayList<>();
 
     public Post(PostRequestDto requestDto) {
         this.title = requestDto.getTitle();
-        this.writer = requestDto.getWriter();
-        this.password = requestDto.getPassword();
         this.content = requestDto.getContent();
     }
 
     public void update(PostRequestDto postRequestDto) {
         this.title = postRequestDto.getTitle();
-        this.writer = postRequestDto.getWriter();
         this.content = postRequestDto.getContent();
     }
+
+
+
 }
