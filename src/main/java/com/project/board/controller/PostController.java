@@ -9,6 +9,7 @@ import com.project.board.service.PostService;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,19 +43,12 @@ public class PostController {
 
     // 할일카드 생성
     @PostMapping("/post")
-    @ResponseStatus(HttpStatus.CREATED)
-    public PostResponseDto createPostControl(@RequestBody PostRequestDto requestDto,  HttpServletRequest req){
-        String tokenValue = jwtUtil.getTokenFromRequest(req);
-        tokenValue = jwtUtil.substringToken(tokenValue);
+    public ResponseEntity<PostResponseDto> createPostControl(@RequestBody PostRequestDto requestDto, HttpServletRequest req){
 
+        PostResponseDto postResponseDto = postService.createPost(requestDto, req);
 
-        Claims info = jwtUtil.getUserInfoFromToken(tokenValue);
-
-//        System.out.println(info);
-
-
-        PostResponseDto postResponseDto = postService.createPost(requestDto);
-        return postResponseDto;
+        return ResponseEntity.status(201)
+                .body(postResponseDto);
     }
 
     // 할일카드 수정

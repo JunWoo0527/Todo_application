@@ -3,12 +3,12 @@ package com.project.board.service;
 import com.project.board.dto.PostRequestDto;
 import com.project.board.dto.PostResponseDto;
 import com.project.board.entity.Post;
-import com.project.board.jwt.JwtAuthorizationFilter;
+import com.project.board.entity.User;
 import com.project.board.jwt.JwtUtil;
 import com.project.board.repository.PostRepository;
 import com.project.board.repository.UserRepository;
-import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,23 +21,26 @@ public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
-    private final JwtAuthorizationFilter jwtAuthorizationFilter;
 
 
-    public PostService(PostRepository postRepository, UserRepository userRepository, JwtUtil jwtUtil, JwtAuthorizationFilter jwtAuthorizationFilter) {
+
+    public PostService(PostRepository postRepository, UserRepository userRepository, JwtUtil jwtUtil) {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
         this.jwtUtil = jwtUtil;
-        this.jwtAuthorizationFilter = jwtAuthorizationFilter;
     }
 
     // 게시글 저장
-    public PostResponseDto createPost(PostRequestDto postRequestDto ) {
-
+    public PostResponseDto createPost(PostRequestDto postRequestDto, HttpServletRequest httpServletRequest ) {
+        String username = jwtUtil.getUsernameFromToken(httpServletRequest);
 
         // RequestDto -> Entity
         Post post = new Post(postRequestDto);
+
         post.getCreatedAt();
+
+        User user = userRepository.findByUsername(username).orElseThrow();
+        post.setUser(user);
 
 
         // DB에 저장

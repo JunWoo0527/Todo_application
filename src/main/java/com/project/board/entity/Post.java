@@ -1,6 +1,7 @@
 package com.project.board.entity;
 
 import com.project.board.dto.PostRequestDto;
+import com.project.board.repository.UserRepository;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
