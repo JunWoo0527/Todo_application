@@ -1,5 +1,6 @@
 package com.project.board.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.board.dto.PostRequestDto;
 import com.project.board.repository.UserRepository;
 import jakarta.persistence.*;
@@ -27,10 +28,13 @@ public class Post extends Timestamped{
     private boolean complete = false;
 
     // 관계설정
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
+
+    @JsonIgnore
     @OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<Comment> commentList = new ArrayList<>();
 

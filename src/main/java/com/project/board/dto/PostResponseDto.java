@@ -23,7 +23,9 @@ public class PostResponseDto {
         this.content = post.getContent();
         this.createAt = post.getCreatedAt();
         this.modifiedAt = post.getModifiedAt();
+        this.complete = post.isComplete();
     }
+
 
 
 
