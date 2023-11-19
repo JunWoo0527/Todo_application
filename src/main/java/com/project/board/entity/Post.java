@@ -25,10 +25,10 @@ public class Post extends Timestamped{
     @Column(name = "content", nullable = false, length = 100)
     private String content;
     @Column(name = "complete", nullable = false)
-    private Boolean complete;
+    private Boolean complete = false;
 
     // 관계설정
-    @JsonIgnore
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

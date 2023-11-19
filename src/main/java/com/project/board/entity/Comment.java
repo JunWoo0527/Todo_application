@@ -1,6 +1,8 @@
 package com.project.board.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.project.board.dto.CommentRequestDto;
+import com.project.board.dto.PostRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,23 +12,30 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "comments")
+@Table(name = "comment")
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
-    private String comment;
+    private String content;
 
-    @JsonIgnore
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @JsonIgnore
+
     @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;
 
+    public Comment(CommentRequestDto commentRequestDto) {
+        this.content = commentRequestDto.getContent();
+    }
+
+    public void updateComment(CommentRequestDto commentRequestDto) {
+        this.content = commentRequestDto.getContent();
+    }
 }

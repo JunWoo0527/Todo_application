@@ -20,7 +20,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
-    Map<String,List<Post>> userPostList = new HashMap<>();
+    Map<String,List<PostResponseDto>> userPostList = new HashMap<>();
 
 
     public PostService(PostRepository postRepository, UserRepository userRepository, JwtUtil jwtUtil) {
@@ -64,15 +64,12 @@ public class PostService {
     }
 
     // 할일카드 전체 출력
-    public Map<String , List<Post>> printAllPost() {
+    public Map<String , List<PostResponseDto>> printAllPost() {
 
         // Map구조로 key는 User, value는 해당 User가 작성한 Post들을 List구조로 저장
         for (User user : userRepository.findAll()){
-            userPostList.put(user.getUsername(), postRepository.findAllByUserOrderByModifiedAtDesc(user));
+            userPostList.put(user.getUsername(), postRepository.findAllByUserOrderByModifiedAtDesc(user).stream().map(PostResponseDto::new).toList());
         }
-
-
-
 
         return userPostList;
     }
@@ -96,6 +93,7 @@ public class PostService {
         return postResponseDto;
     }
 
+    // 할일카드 완료처리
     public Boolean completePost(Long id, HttpServletRequest req) {
         //  로그인한 사용자와 할일카드작성자가 같은지 대조
         Post post = checkLoginUserAndPostUser(id, req);
@@ -110,6 +108,7 @@ public class PostService {
         return true;
     }
 
+    // 로그인한 사용자와 게시글작성자 대조
     public Post checkLoginUserAndPostUser(Long id, HttpServletRequest req){
         // ID로 할일카드 DB조회
         Optional<Post> optionalPost = postRepository.findById(id);
@@ -130,28 +129,7 @@ public class PostService {
         if (!Objects.equals(username, idUsername)){
             return null;
         }
-
         return post;
     }
 
-//
-//
-//    // 할일카드 삭제
-//    public Long deletePost(Long id) {
-//        // 해당 메모가 DB에 존재하는지 확인
-//        Post post = findPost(id);
-//
-//        // memo 삭제
-//        postRepository.delete(post);
-//
-//        return id;
-//    }
-
-
-
-
-//    private Post findPost(Long id) {
-//       return postRepository.findById(id).orElseThrow(() ->
-//                new IllegalArgumentException("선택한 게시글은 존재하지 않습니다."));
-//    }
 }

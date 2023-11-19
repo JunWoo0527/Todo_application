@@ -41,10 +41,12 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
             if (!jwtUtil.validateToken(tokenValue)) {
                 log.error("Token Error");
+
                 res.setStatus(400);
                 res.setCharacterEncoding("utf-8");
                 PrintWriter writer = res.getWriter();
                 writer.println("토큰이 유효하지 않습니다.");
+
                 return;
             }
 
