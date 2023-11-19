@@ -65,12 +65,16 @@ public class PostController {
         }
         return ResponseEntity.accepted().body(postResponseDto);
     }
-//
-//    // 게시글 삭제
-//    @DeleteMapping("/post/{postId}") //Request Parm방식으로 데이터를받음
-//    public Long deletePostControl(@PathVariable Long postId) {
-//        return postService.deletePost(postId);
-//    }
+
+    // 할일카드 완료
+    @PatchMapping("/check/{postId}") //Request Parm방식으로 데이터를받음
+    public ResponseEntity deletePostControl(@PathVariable Long postId, HttpServletRequest req) {
+        Boolean check = postService.completePost(postId,req);
+        if (check == false){
+            return ResponseEntity.status(400).body("작성자만 완료처리할 수 있습니다.");
+        }
+        return ResponseEntity.ok("완료처리 되었습니다.");
+    }
 
 
 

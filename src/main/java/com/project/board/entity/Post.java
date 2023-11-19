@@ -25,7 +25,7 @@ public class Post extends Timestamped{
     @Column(name = "content", nullable = false, length = 100)
     private String content;
     @Column(name = "complete", nullable = false)
-    private boolean complete = false;
+    private Boolean complete;
 
     // 관계설정
     @JsonIgnore

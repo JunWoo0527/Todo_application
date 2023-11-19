@@ -80,8 +80,38 @@ public class PostService {
     // 할일카드 수정
     @Transactional
     public PostResponseDto updatePost(Long id, PostRequestDto postRequestDto, HttpServletRequest req) {
+        //  로그인한 사용자와 할일카드작성자가 같은지 대조
+        Post post = checkLoginUserAndPostUser(id, req);
+        if (post == null){
+            return null;
+        }
 
-        // ID 할일카드가 DB조회
+        // Post 내용 수정
+        post.update(postRequestDto);
+        postRepository.save(post);
+
+        // Entity -> Dto
+        PostResponseDto postResponseDto = new PostResponseDto(post);
+
+        return postResponseDto;
+    }
+
+    public Boolean completePost(Long id, HttpServletRequest req) {
+        //  로그인한 사용자와 할일카드작성자가 같은지 대조
+        Post post = checkLoginUserAndPostUser(id, req);
+        if (post == null){
+            return false;
+        }
+
+        // 할일카드 완료처리
+        post.setComplete(true);
+        postRepository.save(post);
+
+        return true;
+    }
+
+    public Post checkLoginUserAndPostUser(Long id, HttpServletRequest req){
+        // ID로 할일카드 DB조회
         Optional<Post> optionalPost = postRepository.findById(id);
         if (optionalPost.isEmpty()){
             return null;
@@ -101,12 +131,9 @@ public class PostService {
             return null;
         }
 
-        // Post 내용 수정
-        post.update(postRequestDto);
-
-        PostResponseDto postResponseDto = new PostResponseDto(post);
-        return postResponseDto;
+        return post;
     }
+
 //
 //
 //    // 할일카드 삭제

@@ -14,7 +14,7 @@ public class PostResponseDto {
     private String content;
     private LocalDateTime createAt;
     private LocalDateTime modifiedAt;
-    private boolean complete;
+    private Boolean complete;
 
     public PostResponseDto(Post post) {
         this.id = post.getId();
@@ -23,7 +23,7 @@ public class PostResponseDto {
         this.content = post.getContent();
         this.createAt = post.getCreatedAt();
         this.modifiedAt = post.getModifiedAt();
-        this.complete = post.isComplete();
+        this.complete = post.getComplete();
     }
 
 
