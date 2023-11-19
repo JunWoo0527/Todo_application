@@ -8,7 +8,7 @@
         
 - [x]  **API 명세서 작성하기!**
     - API 명세서
-        
+      https://documenter.getpostman.com/view/30858015/2s9Ye8fEzx
       ![캡처1](https://github.com/JunWoo0527/spartaBoard/assets/146637795/fb62398d-2ce7-41e0-90a3-ad6c1149268f)
 
         
