@@ -1,14 +1,9 @@
-package com.project.board.controller;
+package com.project.board.user;
 
 
-import com.project.board.dto.SignupRequestDto;
-import com.project.board.service.UserService;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import jakarta.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
@@ -28,16 +23,18 @@ public class UserController {
 
     @PostMapping("/post/user/signup")
 
-    public ResponseEntity signup(@Valid @RequestBody SignupRequestDto signupRequestDto, BindingResult bindingResult) {
+    public void signup(@Valid @RequestBody SignupRequestDto signupRequestDto, BindingResult bindingResult) {
+
         // Validation 예외처리
         List<FieldError> fieldErrors = bindingResult.getFieldErrors();
         if(fieldErrors.size() > 0) {
             for (FieldError fieldError : bindingResult.getFieldErrors()) {
                 log.error(fieldError.getField() + " 필드 : " + fieldError.getDefaultMessage());
             }
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getFieldError().getDefaultMessage());
+           new ValidationException("아이디와 비밀번호의 양식이 올바르지 않습니다.");
         }
 
-        return userService.signup(signupRequestDto);
+        userService.signup(signupRequestDto);    //Bad Request ,
+
     }
 }

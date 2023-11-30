@@ -1,7 +1,7 @@
 package com.project.board.security;
 
-import com.project.board.entity.User;
-import com.project.board.entity.UserRoleEnum;
+import com.project.board.user.User;
+import com.project.board.user.UserRoleEnum;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

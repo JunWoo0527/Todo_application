@@ -1,8 +1,7 @@
-package com.project.board.entity;
+package com.project.board.comment;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.project.board.dto.CommentRequestDto;
-import com.project.board.dto.PostRequestDto;
+import com.project.board.post.Post;
+import com.project.board.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

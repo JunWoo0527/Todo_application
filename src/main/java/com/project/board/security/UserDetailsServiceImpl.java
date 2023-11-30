@@ -1,7 +1,7 @@
 package com.project.board.security;
 
-import com.project.board.entity.User;
-import com.project.board.repository.UserRepository;
+import com.project.board.user.User;
+import com.project.board.user.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

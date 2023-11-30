@@ -1,7 +1,7 @@
 package com.project.board.config;
 
-import com.project.board.jwt.JwtAuthenticationFilter;
-import com.project.board.jwt.JwtAuthorizationFilter;
+import com.project.board.security.JwtAuthenticationFilter;
+import com.project.board.security.JwtAuthorizationFilter;
 import com.project.board.jwt.JwtUtil;
 import com.project.board.security.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
@@ -66,11 +66,6 @@ public class WebSecurityConfig {
                         .anyRequest().authenticated() // 그 외 모든 요청 인증처리
         );
 
-//        http.formLogin((formLogin) ->
-//                formLogin
-//                        //로그인인증 허가
-//                        .loginProcessingUrl("/api/post/user/login").permitAll()
-//        );
 
         // 필터 관리
         http.addFilterBefore(jwtAuthorizationFilter(), JwtAuthenticationFilter.class);

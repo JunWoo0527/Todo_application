@@ -1,6 +1,8 @@
-package com.project.board.entity;
+package com.project.board.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.project.board.comment.Comment;
+import com.project.board.post.Post;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

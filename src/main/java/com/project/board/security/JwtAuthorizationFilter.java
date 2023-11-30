@@ -1,5 +1,6 @@
-package com.project.board.jwt;
+package com.project.board.security;
 
+import com.project.board.jwt.JwtUtil;
 import com.project.board.security.UserDetailsServiceImpl;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;

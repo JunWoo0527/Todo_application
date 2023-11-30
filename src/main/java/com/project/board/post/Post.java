@@ -1,8 +1,9 @@
-package com.project.board.entity;
+package com.project.board.post;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.project.board.dto.PostRequestDto;
-import com.project.board.repository.UserRepository;
+import com.project.board.comment.Comment;
+import com.project.board.entity.Timestamped;
+import com.project.board.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +17,7 @@ import java.util.List;
 @Setter
 @Table(name = "post")
 @NoArgsConstructor
-public class Post extends Timestamped{
+public class Post extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

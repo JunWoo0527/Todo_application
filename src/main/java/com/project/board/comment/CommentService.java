@@ -1,19 +1,14 @@
-package com.project.board.service;
+package com.project.board.comment;
 
-import com.project.board.dto.CommentRequestDto;
-import com.project.board.dto.CommentResponseDto;
-import com.project.board.entity.Comment;
-import com.project.board.entity.Post;
+import com.project.board.post.Post;
 import com.project.board.jwt.JwtUtil;
-import com.project.board.repository.CommentRepository;
-import com.project.board.repository.PostRepository;
-import com.project.board.repository.UserRepository;
-import jakarta.servlet.http.HttpServletRequest;
+import com.project.board.post.PostRepository;
+import com.project.board.user.UserRepository;
+import com.project.board.security.UserDetailsImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 public class CommentService {
@@ -30,21 +25,22 @@ public class CommentService {
     }
 
     // 댓글 생성
-    public CommentResponseDto createComment(Long postId, CommentRequestDto commentRequestDto, HttpServletRequest req) {
+    public CommentResponseDto createComment(Long postId, CommentRequestDto commentRequestDto, UserDetailsImpl userDetails) {
         // 할일카드 DB조회
-        Optional<Post> optionalPost = postRepository.findById(postId);
-        if (optionalPost.isEmpty()){
-            return null;
-        }
-        Post post = optionalPost.get();
+        Post post = postRepository.findById(postId).orElseThrow(() ->
+                new IllegalArgumentException("해당 할일카드가 존재하지 않습니다.")
+                );
+
 
         // jwt토큰에서 username추출
-        String username = jwtUtil.getUsernameFromToken(req);
+        String username = userDetails.getUsername();
 
         // 댓글 인스턴스화
         Comment comment = new Comment(commentRequestDto);
         comment.setPost(post);
-        comment.setUser(userRepository.findByUsername(username).orElseThrow());
+        comment.setUser(userRepository.findByUsername(username).orElseThrow(() ->
+                new IllegalAccessError("해당 올바르지 못한 사용자입니다.")
+                ));
 
         // 댓글 Repository 저장
         commentRepository.save(comment);
@@ -56,13 +52,11 @@ public class CommentService {
     }
 
     // 댓글 수정
-    public CommentResponseDto updateComment(Long commentId, CommentRequestDto commentRequestDto, HttpServletRequest req) {
+    public CommentResponseDto updateComment(Long commentId, CommentRequestDto commentRequestDto, UserDetailsImpl userDetails) {
 
         //댓글 유무 및 로그인사용자 와 댓글작성자 대조 검증
-        Comment comment = checkLoginUserAndCommentUser(commentId, req);
-        if (comment == null) {
-            return null;
-        }
+        Comment comment = checkLoginUserAndCommentUser(commentId, userDetails);
+
 
         comment.updateComment(commentRequestDto);
         commentRepository.save(comment);
@@ -72,13 +66,11 @@ public class CommentService {
     }
 
     // 댓글 삭제
-    public boolean deleteComment(Long commentId, HttpServletRequest req) {
+    public boolean deleteComment(Long commentId, UserDetailsImpl userDetails) {
 
         //댓글 유무 및 로그인사용자 와 댓글작성자 대조 검증
-        Comment comment = checkLoginUserAndCommentUser(commentId, req);
-        if (comment == null) {
-            return false;
-        }
+        Comment comment = checkLoginUserAndCommentUser(commentId, userDetails);
+
 
         commentRepository.delete(comment);
 
@@ -86,25 +78,23 @@ public class CommentService {
     }
 
     // 로그인한 사용자와 댓글 작성자 대조
-    public Comment checkLoginUserAndCommentUser(Long id, HttpServletRequest req){
+    public Comment checkLoginUserAndCommentUser(Long id, UserDetailsImpl userDetails){
         // 댓글 DB조회
-        Optional<Comment> optionalComment =commentRepository.findById(id);
-        if (optionalComment.isEmpty()){
-            return null;
-        }
-        Comment comment = optionalComment.get();
+        Comment comment = commentRepository.findById(id).orElseThrow(() ->
+                new NullPointerException("해당 ID의 댓글이 존재하지 않습니다.")
+        );
 
         // 로그인한 사용자의 username 추출 및 해당 사용자가 작성한 댓글 조회
-        String username = jwtUtil.getUsernameFromToken(req);
+        String username = userDetails.getUsername();
         List<Comment> CommentByUsername =commentRepository.findALLByUser_Username(username);
         if (CommentByUsername.isEmpty()){
-            return null;
+            throw new NullPointerException("로그인한 사용자가 작성한 댓글이 존재하지 않습니다.");
         }
 
         // 댓글 작성자와 로그인한 작성자가 일치하는지 검증
         String idUsername = comment.getUser().getUsername();
         if (!Objects.equals(username, idUsername)){
-            return null;
+            throw new IllegalAccessError("해당 할일카드는 작성자만 수정할 수 있습니다.");
         }
         return comment;
     }

@@ -1,6 +1,5 @@
-package com.project.board.dto;
+package com.project.board.comment;
 
-import com.project.board.entity.Comment;
 import lombok.Getter;
 
 @Getter

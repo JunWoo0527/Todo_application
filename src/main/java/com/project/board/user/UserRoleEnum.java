@@ -1,4 +1,4 @@
-package com.project.board.entity;
+package com.project.board.user;
 
 public enum UserRoleEnum {
     USER(Authority.USER),  // 사용자 권한

@@ -1,6 +1,5 @@
-package com.project.board.repository;
+package com.project.board.user;
 
-import com.project.board.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

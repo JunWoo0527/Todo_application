@@ -1,4 +1,4 @@
-package com.project.board.dto;
+package com.project.board.user;
 
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
@@ -13,6 +13,5 @@ public class SignupRequestDto {
     private String password;
 
 
-//    private boolean admin = false;
-//    private String adminToken = "";
+
 }

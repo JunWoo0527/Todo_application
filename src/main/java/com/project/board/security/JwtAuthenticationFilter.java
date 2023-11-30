@@ -1,7 +1,8 @@
-package com.project.board.jwt;
+package com.project.board.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.project.board.dto.LoginRequestDto;
+import com.project.board.jwt.JwtUtil;
+import com.project.board.user.LoginRequestDto;
 import com.project.board.security.UserDetailsImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

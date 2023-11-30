@@ -1,12 +1,6 @@
-package com.project.board.service;
+package com.project.board.user;
 
-import com.project.board.dto.SignupRequestDto;
-import com.project.board.entity.User;
-import com.project.board.entity.UserRoleEnum;
 import com.project.board.jwt.JwtUtil;
-import com.project.board.repository.UserRepository;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -28,30 +22,21 @@ public class UserService {
         this.jwtUtil = jwtUtil;
     }
 
-    public ResponseEntity signup(SignupRequestDto signupRequestDto) {
+    public void signup(SignupRequestDto signupRequestDto) {
         String username = signupRequestDto.getUsername();
         String password = passwordEncoder.encode(signupRequestDto.getPassword());
 
         // 회원 중복 확인
         Optional<User> checkUsername = userRepository.findByUsername(username);
+
         if (checkUsername.isPresent()) {
+            throw new IllegalArgumentException("이미 가입한 회원입니다.");
 
-            return ResponseEntity.status(400).body("중복된 사용자입니다");
         } else {
-
-            // 사용자 ROLE 확인
-            UserRoleEnum role = UserRoleEnum.USER;
-//        if (signupRequestDto.isAdmin()) {
-//            if (!ADMIN_TOKEN.equals(signupRequestDto.getAdminToken())) {
-//                throw new IllegalArgumentException("관리자 암호가 틀려 등록이 불가능합니다.");
-//            }
-//            role = UserRoleEnum.ADMIN;
-//        }
             // 사용자 등록
-            User user = new User(username, password, role);
+            User user = new User(username, password, UserRoleEnum.USER);
             userRepository.save(user);
 
-            return ResponseEntity.status(201).body("회원가입이 완료되었습니다.");
         }
 
     }
