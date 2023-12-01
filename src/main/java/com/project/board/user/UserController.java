@@ -31,7 +31,7 @@ public class UserController {
             for (FieldError fieldError : bindingResult.getFieldErrors()) {
                 log.error(fieldError.getField() + " 필드 : " + fieldError.getDefaultMessage());
             }
-           new ValidationException("아이디와 비밀번호의 양식이 올바르지 않습니다.");
+           throw new ValidationException("아이디와 비밀번호의 양식이 올바르지 않습니다.");
         }
 
         userService.signup(signupRequestDto);    //Bad Request ,
