@@ -1,11 +1,14 @@
 package com.project.board.post;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-
+@NoArgsConstructor
 @Getter
+@Setter
 public class PostResponseDto {
     private Long id;
     private String title;

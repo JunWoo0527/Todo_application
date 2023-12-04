@@ -20,11 +20,9 @@ public class Comment {
     @Column(nullable = false)
     private String content;
 
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-
 
     @ManyToOne
     @JoinColumn(name = "post_id")
