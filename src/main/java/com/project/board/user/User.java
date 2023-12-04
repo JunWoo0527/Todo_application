@@ -40,7 +40,10 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<Comment> commentList = new ArrayList<>();
 
-
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 
     public User(String username, String password, UserRoleEnum role) {
         this.username = username;

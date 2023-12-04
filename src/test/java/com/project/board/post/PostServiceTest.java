@@ -1,4 +1,4 @@
-package com.project.board.service;
+package com.project.board.post;
 
 import com.project.board.post.*;
 import com.project.board.security.UserDetailsImpl;

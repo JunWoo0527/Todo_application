@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,7 @@ import java.util.List;
 @Setter
 @Table(name = "post")
 @NoArgsConstructor
-public class Post extends Timestamped {
+public class Post extends Timestamped implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,7 +30,6 @@ public class Post extends Timestamped {
     private Boolean complete = false;
 
     // 관계설정
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

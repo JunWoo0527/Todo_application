@@ -100,7 +100,7 @@ public class PostService {
     public Post checkLoginUserAndPostUser(Long id, UserDetailsImpl userDetails){
         // ID로 할일카드 DB조회
         Post post = postRepository.findById(id).orElseThrow(() ->
-                new NullPointerException("해당 ID의 할일카드가 존재하지 않습니다.")
+                new IllegalArgumentException("해당 ID의 할일카드가 존재하지 않습니다.")
                 );
 
 
@@ -108,7 +108,7 @@ public class PostService {
         String username = userDetails.getUsername();
         List<Post> postByUsername = postRepository.findALLByUser_Username(username);
         if (postByUsername.isEmpty()){
-            throw new NullPointerException("로그인한 사용자가 작성한 할일카드가 존재하지 않습니다.");
+            throw new IllegalArgumentException("로그인한 사용자가 작성한 할일카드가 존재하지 않습니다.");
         }
 
         // 게시글 작성자와 로그인한 작성자가 일치하는지 검증

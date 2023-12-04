@@ -1,4 +1,4 @@
-package com.project.board.pojo.entity;
+package com.project.board.post;
 
 import com.project.board.post.Post;
 import com.project.board.post.PostRequestDto;

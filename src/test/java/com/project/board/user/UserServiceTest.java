@@ -1,4 +1,4 @@
-package com.project.board.service;
+package com.project.board.user;
 
 import com.project.board.user.*;
 import org.junit.jupiter.api.DisplayName;

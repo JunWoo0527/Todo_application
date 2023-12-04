@@ -1,4 +1,4 @@
-package com.project.board.service;
+package com.project.board.comment;
 
 import com.project.board.comment.*;
 import com.project.board.post.Post;

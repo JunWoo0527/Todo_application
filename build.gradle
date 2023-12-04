@@ -22,6 +22,8 @@ repositories {
 }
 
 dependencies {
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
 	// JPA 설정
@@ -38,13 +40,22 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 
+	testRuntimeOnly 'com.h2database:h2'
+	testCompileOnly 'org.projectlombok:lombok'
+	testCompileOnly group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
 	testImplementation 'org.mockito:mockito-core:4.8.0'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+}
+
+tasks.named('bootBuildImage') {
+	builder = 'paketobuildpacks/builder-jammy-base:latest'
 }
 
 tasks.named('test') {

@@ -122,14 +122,4 @@ public class JwtUtil {
         return null;
     }
 
-    // 쿠키에서 username가져오기
-    public String getUsernameFromToken(HttpServletRequest request) {
-        String tokenValue = getTokenFromRequest(request);
-        tokenValue = substringToken(tokenValue);
-
-        Claims info = getUserInfoFromToken(tokenValue);
-        System.out.println(info.getSubject());
-        return info.getSubject();
-    }
-
 }

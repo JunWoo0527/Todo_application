@@ -1,6 +1,5 @@
 package com.project.board.post;
 
-import com.project.board.jwt.JwtUtil;
 import com.project.board.security.UserDetailsImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -14,16 +13,14 @@ import java.util.Map;
 public class PostController {
 
     private final PostService postService;
-    private final JwtUtil jwtUtil;
 
-    public PostController(PostService postService, JwtUtil jwtUtil) {
+    public PostController(PostService postService) {
         this.postService = postService;
-        this.jwtUtil = jwtUtil;
     }
 
     // 할일카드 전체 출력
     @GetMapping("")
-    public ResponseEntity<Map<String, List<PostResponseDto>>> printPostControl() {
+    public ResponseEntity<Map<String, List<PostResponseDto>>> printAllPostControl() {
         Map<String, List<PostResponseDto>> userPostList =  postService.printAllPost();
 
         return ResponseEntity.ok().body(userPostList);

@@ -1,4 +1,4 @@
-package com.project.board.pojo.entity;
+package com.project.board.comment;
 
 import com.project.board.comment.Comment;
 import com.project.board.comment.CommentRepository;

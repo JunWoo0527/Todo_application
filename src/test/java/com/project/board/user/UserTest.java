@@ -1,4 +1,4 @@
-package com.project.board.pojo.entity;
+package com.project.board.user;
 
 import com.project.board.user.User;
 import com.project.board.user.UserRoleEnum;
