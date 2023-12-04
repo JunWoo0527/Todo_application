@@ -15,13 +15,12 @@ public class CommentService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
-    private final JwtUtil jwtUtil;
 
-    public CommentService(PostRepository postRepository, UserRepository userRepository, CommentRepository commentRepository, JwtUtil jwtUtil) {
+
+    public CommentService(PostRepository postRepository, UserRepository userRepository, CommentRepository commentRepository) {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
         this.commentRepository = commentRepository;
-        this.jwtUtil = jwtUtil;
     }
 
     // 댓글 생성
@@ -32,7 +31,7 @@ public class CommentService {
                 );
 
 
-        // jwt토큰에서 username추출
+        // username추출
         String username = userDetails.getUsername();
 
         // 댓글 인스턴스화

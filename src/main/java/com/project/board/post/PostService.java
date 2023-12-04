@@ -1,9 +1,8 @@
 package com.project.board.post;
 
-import com.project.board.user.User;
-import com.project.board.jwt.JwtUtil;
-import com.project.board.user.UserRepository;
 import com.project.board.security.UserDetailsImpl;
+import com.project.board.user.User;
+import com.project.board.user.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,14 +14,12 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final UserRepository userRepository;
-    private final JwtUtil jwtUtil;
     Map<String,List<PostResponseDto>> userPostList = new HashMap<>();
 
 
-    public PostService(PostRepository postRepository, UserRepository userRepository, JwtUtil jwtUtil) {
+    public PostService(PostRepository postRepository, UserRepository userRepository) {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
-        this.jwtUtil = jwtUtil;
     }
 
     // 할일카드 저장
@@ -35,7 +32,7 @@ public class PostService {
 
         // username으로 User찾아 Post에 set
         User user = userRepository.findByUsername(username).orElseThrow(() ->
-                new IllegalArgumentException("해당 유저의 할일카드가 없습니다.")
+                new IllegalArgumentException("해당 유저가 존재하지 않습니다.")
                 );
         post.setUser(user);
 
@@ -51,13 +48,11 @@ public class PostService {
     // 선택 할일카드 출력
     public PostResponseDto printPost(Long id) {
 
-        Optional<Post> checkPostId = postRepository.findById(id);
-
-        if (checkPostId.isPresent()){
-            return new PostResponseDto(checkPostId.get());
-        } else {
+        Post checkPostId = postRepository.findById(id).orElseThrow(() -> {
             throw new IllegalArgumentException("해당 할일카드가 존재하지 않습니다.");
-        }
+        });
+
+        return new PostResponseDto(checkPostId);
 
     }
 
